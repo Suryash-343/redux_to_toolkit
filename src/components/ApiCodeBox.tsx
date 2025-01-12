@@ -26,7 +26,7 @@ import Prefix from '../config/ApiPrefix';
 
 export const ${apiFunctionName}Api = async (${dynamicUrl ? 'url: string' : ''} ${payloadBody ? 'body: any' : ''}) => {
   try {
-      const response = await AXIOS.${requestType}(\`\${Prefix.api}/${endpoint}${dynamicUrl ?`\${url ? url : ''}` : ""}\`);
+      const response = await AXIOS.${requestType}(\`\${Prefix.api}/${endpoint}${dynamicUrl ? `\${url ? url : ''}` : ""}\`${payloadBody ? ', body' : ''});
     return response.data;
   } catch (error: unknown) {
     // Type guard for AxiosError
@@ -42,7 +42,7 @@ export const ${apiFunctionName}Api = async (${dynamicUrl ? 'url: string' : ''} $
             `;
             setApiCode(dynamicCode);
         }
-    }, [panelName, endpoint, dynamicUrl, apiFunctionName]);
+    }, [panelName, endpoint, dynamicUrl, apiFunctionName, payloadBody, requestType]);
 
     return (
         <div>
