@@ -59,7 +59,7 @@ export default ${camelCase(panelName)}ApiSlice.reducer;
 
   return (
     <div>
-      <h3>{panelName}ApiSlice.ts</h3>
+      <h3>{camelCase(panelName)}ApiSlice.ts</h3>
       <textarea
         value={sliceCode}
         readOnly

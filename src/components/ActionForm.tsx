@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import SliceCodeBox from './SliceCodeBox.tsx';
+import ApiActionCodeBox from './ApiActionCodeBox.tsx';
 
 const ActionForm = () => {
   const [formData, setFormData] = useState({
@@ -38,7 +39,7 @@ const ActionForm = () => {
     alert('Form submitted successfully!');
   };
 
-  const { panelName, apiFunctionName, reducer} = formData;
+  const { panelName, apiFunctionName, reducer, endpoint} = formData;
 
   return (
     <div className="form-container">
@@ -149,6 +150,9 @@ const ActionForm = () => {
       {/* Pass the panel name and API function name to SliceCodeBox */}
       {panelName && apiFunctionName && reducer && (
         <SliceCodeBox panelName={panelName} apiFunctionName={apiFunctionName}  reducer={reducer}/>
+      )}
+      {panelName && apiFunctionName  && endpoint && (
+        <ApiActionCodeBox panelName={panelName} apiFunctionName={apiFunctionName} endpoint={endpoint}/> 
       )}
     </div>
   );
