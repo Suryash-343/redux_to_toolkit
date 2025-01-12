@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import SliceCodeBox from './SliceCodeBox.tsx';
 
 const ActionForm = () => {
   const [formData, setFormData] = useState({
@@ -36,6 +37,8 @@ const ActionForm = () => {
     console.log('Form Data Submitted:', formData);
     alert('Form submitted successfully!');
   };
+
+  const { panelName, apiFunctionName, reducer} = formData;
 
   return (
     <div className="form-container">
@@ -142,6 +145,11 @@ const ActionForm = () => {
           Submit
         </button>
       </form>
+
+      {/* Pass the panel name and API function name to SliceCodeBox */}
+      {panelName && apiFunctionName && reducer && (
+        <SliceCodeBox panelName={panelName} apiFunctionName={apiFunctionName}  reducer={reducer}/>
+      )}
     </div>
   );
 };
