@@ -39,7 +39,7 @@ const ActionForm = () => {
     alert('Form submitted successfully!');
   };
 
-  const { panelName, apiFunctionName, reducer, endpoint} = formData;
+  const { panelName, apiFunctionName, reducer, endpoint, dynamicUrl, payloadBody, requestType} = formData;
 
   return (
     <div className="form-container">
@@ -152,7 +152,12 @@ const ActionForm = () => {
         <SliceCodeBox panelName={panelName} apiFunctionName={apiFunctionName}  reducer={reducer}/>
       )}
       {panelName && apiFunctionName  && endpoint && (
-        <ApiActionCodeBox panelName={panelName} apiFunctionName={apiFunctionName} endpoint={endpoint}/> 
+        <ApiActionCodeBox 
+        panelName={panelName} 
+        apiFunctionName={apiFunctionName} 
+        endpoint={endpoint} 
+        dynamicUrl={dynamicUrl}
+        payloadBody={payloadBody}/> 
       )}
     </div>
   );

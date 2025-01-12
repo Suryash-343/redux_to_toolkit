@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
-const ApiActionCodeBox = ({ panelName, apiFunctionName, endpoint }: { panelName: string; apiFunctionName: string; endpoint:string; }) => {
+const ApiActionCodeBox = ({ panelName, apiFunctionName, endpoint, dynamicUrl, payloadBody }: { 
+  panelName: string; 
+  apiFunctionName: string; 
+  endpoint:string; 
+  dynamicUrl:any;
+  payloadBody:any;
+ }) => {
   const [apiActionCode, setApiActionCode] = useState('');
 
   const camelCase = (str: string): string => {
@@ -20,8 +26,8 @@ import { ${camelCase(apiFunctionName)}Api } from '../../api/${camelCase(panelNam
 
 export const ${camelCase(apiFunctionName)} = createAsyncThunk(
   '${endpoint}',  
-  async (url: string) => {
-    const response = await ${camelCase(apiFunctionName)}Api(url);  
+  async (${dynamicUrl ? 'url: string': ''}${payloadBody ? 'body: any': ''}) => {
+    const response = await ${camelCase(apiFunctionName)}Api(${dynamicUrl ? 'url' : ''}${payloadBody ? 'body': ''});  
     return response;
   }
 );
@@ -29,7 +35,7 @@ export const ${camelCase(apiFunctionName)} = createAsyncThunk(
 
       setApiActionCode(dynamicCode); // Set the code to display in the textbox
     }
-  }, [panelName, apiFunctionName, endpoint]);
+  }, [panelName, apiFunctionName, endpoint, dynamicUrl, payloadBody]);
   return (
     <div>
       <h3>{camelCase(panelName)}ApiAction.ts</h3>
