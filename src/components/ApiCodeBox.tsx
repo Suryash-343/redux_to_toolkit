@@ -16,7 +16,13 @@ const ApiCodeBox = ({
     payloadBody: boolean;
 }) => {
     const [apiCode, setApiCode] = useState('');
-
+    const camelCase = (str: string): string => {
+      return str
+        .replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) => 
+          index === 0 ? word.toLowerCase() : word.toUpperCase()
+        )
+        .replace(/\s+/g, ''); // Remove all spaces
+    }
     useEffect(() => {
         if (panelName && endpoint) {
             const dynamicCode = `
@@ -46,7 +52,7 @@ export const ${apiFunctionName}Api = async (${dynamicUrl ? 'url: string' : ''} $
 
     return (
         <div>
-            <h3>{panelName}Api.ts</h3>
+            <h3>{camelCase(panelName)}Api.ts</h3>
             <textarea
                 value={apiCode}
                 readOnly
