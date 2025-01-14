@@ -2,7 +2,7 @@ import React from 'react';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 
-const DownloadZipButton = ({ files }: { files: { name: string; content: string }[] }) => {
+const DownloadZipButton = ({ zipName, files }: { zipName: any; files: { name: string; content: string }[] }) => {
     const handleDownloadZip = async () => {
         const zip = new JSZip();
 
@@ -15,7 +15,7 @@ const DownloadZipButton = ({ files }: { files: { name: string; content: string }
         const zipBlob = await zip.generateAsync({ type: 'blob' });
 
         // Trigger the download
-        saveAs(zipBlob, 'project-files.zip');
+        saveAs(zipBlob, `${zipName}.zip`);
     };
 
     return (
