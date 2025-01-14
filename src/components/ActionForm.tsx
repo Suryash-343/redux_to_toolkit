@@ -151,12 +151,12 @@ const ActionForm = () => {
                     <DownloadZipButton zipName={`${panelName}-converted`} files={files} />
                 </h2>
 
-                {/* <ApiCodeBox
+                <ApiCodeBox
                         panelName={panelName}
                         forms={forms}
                         apiCode={apiCode}
                         setApiCode={setApiCode}
-                    /> */}
+                    />
 
 
                 <ApiActionCodeBox
@@ -167,19 +167,21 @@ const ActionForm = () => {
                 />
 
 
-                {/* <SliceCodeBox
-                       forms={forms}
+                <SliceCodeBox
+                    panelName={panelName}
+                    forms={forms}
                         sliceCode={sliceCode}
                         setSliceCode={setSliceCode}
-                    /> */}
+                    />
 
 
 
-                {/* <TypeCodeBox
+                <TypeCodeBox
+                        panelName={panelName}
                         forms={forms}
                         typeCode={typeCode}
                         setTypeCode={setTypeCode}
-                    /> */}
+                    />
 
 
             </div>
@@ -304,18 +306,7 @@ const ActionForm = () => {
                                 {expandedForm === form.id && (
                                     <div style={{ padding: '10px' }}>
                                         <form>
-                                            <div className="form-group">
-                                                <label htmlFor={`panelName-${form.id}`}>Panel Name:</label>
-                                                <input
-                                                    type="text"
-                                                    id={`panelName-${form.id}`}
-                                                    name="panelName"
-                                                    value={form.panelName}
-                                                    onChange={(e) => handleChange(form.id, e)}
-                                                    placeholder="Enter panel name"
-                                                    required
-                                                />
-                                            </div>
+                                           
                                             <div className="form-group">
                                                 <label htmlFor={`endpoint-${form.id}`}>Endpoint:</label>
                                                 <input

@@ -1,30 +1,56 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
-const SliceCodeBox = ({ 
-  panelName, 
-  apiFunctionName, 
-  reducer,
+const SliceCodeBox = ({
+  panelName,
+  forms,
   sliceCode,
   setSliceCode,
- }: { panelName: string; apiFunctionName: string; reducer: string; sliceCode:any; setSliceCode:any;}) => {
+}: {
+  panelName: string;
+  forms: any[];
+  sliceCode: any;
+  setSliceCode: any;
+}) => {
   const camelCase = (str: string): string => {
     return str
-      .replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) => 
+      .replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) =>
         index === 0 ? word.toLowerCase() : word.toUpperCase()
       )
       .replace(/\s+/g, ''); // Remove all spaces
-  }
-  
+  };
+
   useEffect(() => {
-    // Generate dynamic slice code
-    if (panelName && apiFunctionName) {
+    if (panelName && forms?.length > 0) {
+      // Generate slice code for all forms
+      const reducersList = forms
+        .map(
+          (form) => `
+      .addCase(${camelCase(form.apiFunctionName)}.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(${camelCase(form.apiFunctionName)}.fulfilled, (state, action) => {
+        state.loading = false;
+        state.${form.reducer} = action.payload;
+      })
+      .addCase(${camelCase(form.apiFunctionName)}.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      `
+        )
+        .join('');
+
       const dynamicCode = `
 import { createSlice } from '@reduxjs/toolkit';
-import { ${apiFunctionName} } from './${camelCase(panelName)}ApiActions';
+import { ${forms
+        .map((form) => camelCase(form.apiFunctionName))
+        .join(', ')} } from './${camelCase(panelName)}ApiActions';
 import { ${panelName}State } from './${camelCase(panelName)}ApiTypes';
 
 const initialState: ${panelName}State = {
-  ${reducer}: [],
+  ${forms
+    .map((form) => `${form.reducer}: [],`)
+    .join('\n  ')}  
   loading: false,
   error: null,
 };
@@ -34,24 +60,20 @@ const ${camelCase(panelName)}ApiSlice = createSlice({
   initialState,
   reducers: {
     clear${panelName}State: (state) => {
-      state.${reducer} = [];
+      ${forms
+        .map(
+          (form) => `
+      state.${form.reducer} = [];
+      `
+        )
+        .join('')}
       state.loading = false;
       state.error = null;
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(${apiFunctionName}.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(${apiFunctionName}.fulfilled, (state, action) => {
-        state.loading = false;
-        state.${reducer} = action.payload;
-      })
-      .addCase(${apiFunctionName}.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string; // Type assertion
-      });
+      ${reducersList}
   },
 });
 
@@ -60,7 +82,7 @@ export default ${camelCase(panelName)}ApiSlice.reducer;
       `;
       setSliceCode(dynamicCode);
     }
-  }, [panelName, apiFunctionName, reducer]);
+  }, [panelName, forms]);
 
   return (
     <div>
