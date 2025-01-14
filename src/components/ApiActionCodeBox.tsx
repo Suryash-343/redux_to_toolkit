@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
 const ApiActionCodeBox = ({ panelName, 
-  apiFunctionName, 
-  endpoint, 
-  dynamicUrl, 
-  payloadBody, 
+  forms, 
 apiActionCode, 
 setApiActionCode }: { 
-  panelName: string; 
-  apiFunctionName: string; 
-  endpoint:string; 
-  dynamicUrl:any;
-  payloadBody:any;
+  panelName: string;
+  forms:any;
   apiActionCode:any; 
 setApiActionCode:any;
  }) => {
@@ -24,17 +18,17 @@ setApiActionCode:any;
       .replace(/\s+/g, ''); // Remove all spaces
   };
   useEffect(() => {
-    if (panelName && apiFunctionName) {
+    if (forms) {
 
       // Dynamically generate the API Action code
       const dynamicCode = `
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { ${camelCase(apiFunctionName)}Api } from '../../api/${camelCase(panelName)}Api';  
+import { ${camelCase(forms[0]?.apiFunctionName)}Api } from '../../api/${camelCase(panelName)}Api';  
 
-export const ${camelCase(apiFunctionName)} = createAsyncThunk(
-  '${endpoint}',  
-  async (${dynamicUrl ? 'url: string': ''}${payloadBody ? 'body: any': ''}) => {
-    const response = await ${camelCase(apiFunctionName)}Api(${dynamicUrl ? 'url' : ''}${payloadBody ? 'body': ''});  
+export const ${camelCase(forms[0]?.apiFunctionName)} = createAsyncThunk(
+  '${forms[0]?.endpoint}',  
+  async (${forms[0]?.dynamicUrl ? 'url: string': ''}${forms[0]?.payloadBody ? 'body: any': ''}) => {
+    const response = await ${camelCase(forms[0]?.apiFunctionName)}Api(${forms[0]?.dynamicUrl ? 'url' : ''}${forms[0]?.payloadBody ? 'body': ''});  
     return response;
   }
 );
@@ -42,7 +36,7 @@ export const ${camelCase(apiFunctionName)} = createAsyncThunk(
 
       setApiActionCode(dynamicCode); // Set the code to display in the textbox
     }
-  }, [panelName, apiFunctionName, endpoint, dynamicUrl, payloadBody]);
+  }, [panelName, forms]);
   return (
     <div>
       <h3>{camelCase(panelName)}ApiAction.ts</h3>

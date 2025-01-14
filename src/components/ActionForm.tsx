@@ -6,15 +6,8 @@ import ApiCodeBox from './ApiCodeBox.tsx';
 import DownloadZipButton from './DownloadZipButton.tsx';
 
 const ActionForm = () => {
-    const [formData, setFormData] = useState({
-        panelName: '',
-        reducer: '',
-        endpoint: '',
-        apiFunctionName: '',
-        requestType: 'get', // Default to GET
-        dynamicUrl: false, // Default to false
-        payloadBody: false, // Default to false
-    });
+
+    const [panelName, setPanelName] = useState('');
     const [sliceCode, setSliceCode] = useState('');
     const [typeCode, setTypeCode] = useState('');
     const [apiActionCode, setApiActionCode] = useState('');
@@ -49,7 +42,6 @@ const ActionForm = () => {
     //     }
     // };
 
-    const { panelName, apiFunctionName, reducer, endpoint, dynamicUrl, payloadBody, requestType } = formData;
     const files = [
 
         {
@@ -72,7 +64,6 @@ const ActionForm = () => {
     const [forms, setForms] = useState([
         {
             id: Date.now(),
-            panelName: '',
             reducer: '',
             endpoint: '',
             apiFunctionName: '',
@@ -135,6 +126,8 @@ const ActionForm = () => {
     const toggleAccordion = (id: number) => {
         setExpandedForm((prev) => (prev === id ? null : id));
     };
+    console.log(forms, '---+++')
+
     return (
         <div
             style={{
@@ -157,47 +150,37 @@ const ActionForm = () => {
                 <h2 style={{ textAlign: 'center', color: '#007acc' }}>Generated Code
                     <DownloadZipButton zipName={`${panelName}-converted`} files={files} />
                 </h2>
-                {panelName && endpoint && (
-                    <ApiCodeBox
+
+                {/* <ApiCodeBox
                         panelName={panelName}
-                        endpoint={endpoint}
-                        requestType={requestType}
-                        apiFunctionName={apiFunctionName}
-                        dynamicUrl={dynamicUrl}
-                        payloadBody={payloadBody}
+                        forms={forms}
                         apiCode={apiCode}
                         setApiCode={setApiCode}
-                    />
-                )}
-                {panelName && apiFunctionName && endpoint && (
-                    <ApiActionCodeBox
-                        panelName={panelName}
-                        apiFunctionName={apiFunctionName}
-                        endpoint={endpoint}
-                        dynamicUrl={dynamicUrl}
-                        payloadBody={payloadBody}
-                        apiActionCode={apiActionCode}
-                        setApiActionCode={setApiActionCode}
-                    />
-                )}
-                {panelName && apiFunctionName && reducer && (
-                    <SliceCodeBox
-                        panelName={panelName}
-                        apiFunctionName={apiFunctionName}
-                        reducer={reducer}
+                    /> */}
+
+
+                <ApiActionCodeBox
+                    panelName={panelName}
+                    forms={forms}
+                    apiActionCode={apiActionCode}
+                    setApiActionCode={setApiActionCode}
+                />
+
+
+                {/* <SliceCodeBox
+                       forms={forms}
                         sliceCode={sliceCode}
                         setSliceCode={setSliceCode}
-                    />
-                )}
+                    /> */}
 
-                {panelName && endpoint && (
-                    <TypeCodeBox
-                        panelName={panelName}
-                        reducer={reducer}
+
+
+                {/* <TypeCodeBox
+                        forms={forms}
                         typeCode={typeCode}
                         setTypeCode={setTypeCode}
-                    />
-                )}
+                    /> */}
+
 
             </div>
             {/* Right Side: Form */}
@@ -214,159 +197,212 @@ const ActionForm = () => {
                 }}
             >
                 <div style={{ padding: '20px' }}>
-                    <h2 style={{ textAlign: 'center', color: '#007acc' }}>⚡ Convert to Toolkit ⚡             <button onClick={handleAddForm} style={{ marginTop: '20px',  backgroundColor: "#00ff00" }}>
-                        +
-                    </button></h2>
-                    {forms.map((form) => (
-                        <div
-                            key={form.id}
+                    <h2 style={{ textAlign: 'center', color: '#007acc' }}>⚡ Convert to Toolkit ⚡ </h2>
+                    <div
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            marginBottom: '20px',
+                        }}
+                    >
+                        {/* Input Field */}
+                        <input
+                            placeholder="Panel Name"
+                            value={panelName}
+                            onChange={(e: any) => setPanelName(e.target.value)}
                             style={{
+                                flex: 1,
+                                padding: '10px',
                                 border: '1px solid #ccc',
                                 borderRadius: '5px',
-                                marginBottom: '10px',
-                                backgroundColor: '#f9f9f9',
+                                fontSize: '1em',
+                                marginRight: '10px', // Space between input and button
                             }}
+                        />
+
+                        {/* Add Button */}
+                        <button
+                            onClick={handleAddForm}
+                            style={{
+                                padding: '10px 20px',
+                                backgroundColor: '#188f18',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '5px',
+                                fontSize: '1em',
+                                fontWeight: 'bold',
+                                cursor: 'pointer',
+                                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                                transition: 'transform 0.2s ease-in-out',
+                            }}
+                            onMouseOver={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
+                            onMouseOut={(e) => (e.currentTarget.style.transform = 'scale(1)')}
                         >
+                            + Add Panel
+                        </button>
+                    </div>
+
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        marginTop: '20px',
+                        overflow: 'auto',
+                        maxHeight: '60vh',
+                    }}>
+                        {forms.map((form) => (
                             <div
+                                key={form.id}
                                 style={{
-                                    padding: '15px',
-                                    cursor: 'pointer',
-                                    backgroundColor: '#007acc',
-                                    color: 'white',
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
+                                    border: '1px solid #ccc',
                                     borderRadius: '5px',
+                                    marginBottom: '10px',
+                                    backgroundColor: '#f9f9f9',
                                 }}
-                                onClick={() => toggleAccordion(form.id)}
                             >
-                                <div style={{ display: 'flex', alignItems: 'center' }}>
-                                    {/* Request Type Label */}
-                                    <span
-                                        style={{
-                                            padding: '5px 10px',
-                                            backgroundColor: '#ffcc00',
-                                            color: '#000',
-                                            borderRadius: '5px',
-                                            fontWeight: 'bold',
-                                            marginRight: '10px',
-                                        }}
-                                    >
-                                        {form.requestType.toUpperCase()}
-                                    </span>
-                                    {/* API Function Name */}
-                                    <span style={{ fontWeight: 'bold', fontSize: '1.1em' }}>
-                                        {form.apiFunctionName || 'New API Form'}
-                                    </span>
+                                <div
+                                    style={{
+                                        padding: '15px',
+                                        cursor: 'pointer',
+                                        backgroundColor: '#007acc',
+                                        color: 'white',
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        borderRadius: '5px',
+                                    }}
+                                    onClick={() => toggleAccordion(form.id)}
+                                >
+                                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                                        {/* Request Type Label */}
+                                        <span
+                                            style={{
+                                                padding: '5px 10px',
+                                                backgroundColor: '#ffcc00',
+                                                color: '#000',
+                                                borderRadius: '5px',
+                                                fontWeight: 'bold',
+                                                marginRight: '10px',
+                                            }}
+                                        >
+                                            {form.requestType.toUpperCase()}
+                                        </span>
+                                        {/* API Function Name */}
+                                        <span style={{ fontWeight: 'bold', fontSize: '1.1em' }}>
+                                            {form.apiFunctionName || 'New API Form'}
+                                        </span>
+                                    </div>
+                                    {/* Chevron Icon */}
+                                    <div>
+                                        {expandedForm === form.id ? (
+                                            <span style={{ fontSize: '1.5em' }}>▲</span> // Open icon
+                                        ) : (
+                                            <span style={{ fontSize: '1.5em' }}>▼</span> // Closed icon
+                                        )}
+                                    </div>
                                 </div>
-                                {/* Chevron Icon */}
-                                <div>
-                                    {expandedForm === form.id ? (
-                                        <span style={{ fontSize: '1.5em' }}>▲</span> // Open icon
-                                    ) : (
-                                        <span style={{ fontSize: '1.5em' }}>▼</span> // Closed icon
-                                    )}
-                                </div>
+                                {expandedForm === form.id && (
+                                    <div style={{ padding: '10px' }}>
+                                        <form>
+                                            <div className="form-group">
+                                                <label htmlFor={`panelName-${form.id}`}>Panel Name:</label>
+                                                <input
+                                                    type="text"
+                                                    id={`panelName-${form.id}`}
+                                                    name="panelName"
+                                                    value={form.panelName}
+                                                    onChange={(e) => handleChange(form.id, e)}
+                                                    placeholder="Enter panel name"
+                                                    required
+                                                />
+                                            </div>
+                                            <div className="form-group">
+                                                <label htmlFor={`endpoint-${form.id}`}>Endpoint:</label>
+                                                <input
+                                                    type="text"
+                                                    id={`endpoint-${form.id}`}
+                                                    name="endpoint"
+                                                    value={form.endpoint}
+                                                    onChange={(e) => handleChange(form.id, e)}
+                                                    placeholder="Enter API endpoint"
+                                                    required
+                                                />
+                                            </div>
+                                            <div className="form-group">
+                                                <label htmlFor={`apiFunctionName-${form.id}`}>API Function Name:</label>
+                                                <input
+                                                    type="text"
+                                                    id={`apiFunctionName-${form.id}`}
+                                                    name="apiFunctionName"
+                                                    value={form.apiFunctionName}
+                                                    onChange={(e) => handleChange(form.id, e)}
+                                                    placeholder="Enter API function name"
+                                                    required
+                                                />
+                                            </div>
+                                            <div className="form-group">
+                                                <label htmlFor={`reducer-${form.id}`}>Reducer:</label>
+                                                <input
+                                                    type="text"
+                                                    id={`reducer-${form.id}`}
+                                                    name="reducer"
+                                                    value={form.reducer}
+                                                    onChange={(e) => handleChange(form.id, e)}
+                                                    placeholder="Enter reducer name"
+                                                    required
+                                                />
+                                            </div>
+                                            <div className="form-group">
+                                                <label htmlFor={`requestType-${form.id}`}>Request Type:</label>
+                                                <select
+                                                    id={`requestType-${form.id}`}
+                                                    name="requestType"
+                                                    value={form.requestType}
+                                                    onChange={(e) => handleChange(form.id, e)}
+                                                    required
+                                                >
+                                                    <option value="get">GET</option>
+                                                    <option value="post">POST</option>
+                                                    <option value="patch">PATCH</option>
+                                                    <option value="put">PUT</option>
+                                                    <option value="delete">DELETE</option>
+                                                </select>
+                                            </div>
+                                            <div className="form-group">
+                                                <label>Dynamic URL:</label>
+                                                <input
+                                                    type="checkbox"
+                                                    name="dynamicUrl"
+                                                    checked={form.dynamicUrl}
+                                                    onChange={(e) => handleChange(form.id, e)}
+                                                />
+                                            </div>
+                                            <div className="form-group">
+                                                <label>Payload Body:</label>
+                                                <input
+                                                    type="checkbox"
+                                                    name="payloadBody"
+                                                    checked={form.payloadBody}
+                                                    onChange={(e) => handleChange(form.id, e)}
+                                                    disabled={
+                                                        form.requestType === 'post' || form.requestType === 'patch'
+                                                    }
+                                                />
+                                            </div>
+                                        </form>
+                                        <button
+                                            onClick={() => handleRemoveForm(form.id)}
+                                            style={{ marginTop: '10px', color: 'red' }}
+                                        >
+                                            Remove
+                                        </button>
+                                    </div>
+                                )}
                             </div>
-                            {expandedForm === form.id && (
-                                <div style={{ padding: '10px' }}>
-                                    <form>
-                                        <div className="form-group">
-                                            <label htmlFor={`panelName-${form.id}`}>Panel Name:</label>
-                                            <input
-                                                type="text"
-                                                id={`panelName-${form.id}`}
-                                                name="panelName"
-                                                value={form.panelName}
-                                                onChange={(e) => handleChange(form.id, e)}
-                                                placeholder="Enter panel name"
-                                                required
-                                            />
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor={`endpoint-${form.id}`}>Endpoint:</label>
-                                            <input
-                                                type="text"
-                                                id={`endpoint-${form.id}`}
-                                                name="endpoint"
-                                                value={form.endpoint}
-                                                onChange={(e) => handleChange(form.id, e)}
-                                                placeholder="Enter API endpoint"
-                                                required
-                                            />
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor={`apiFunctionName-${form.id}`}>API Function Name:</label>
-                                            <input
-                                                type="text"
-                                                id={`apiFunctionName-${form.id}`}
-                                                name="apiFunctionName"
-                                                value={form.apiFunctionName}
-                                                onChange={(e) => handleChange(form.id, e)}
-                                                placeholder="Enter API function name"
-                                                required
-                                            />
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor={`reducer-${form.id}`}>Reducer:</label>
-                                            <input
-                                                type="text"
-                                                id={`reducer-${form.id}`}
-                                                name="reducer"
-                                                value={form.reducer}
-                                                onChange={(e) => handleChange(form.id, e)}
-                                                placeholder="Enter reducer name"
-                                                required
-                                            />
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor={`requestType-${form.id}`}>Request Type:</label>
-                                            <select
-                                                id={`requestType-${form.id}`}
-                                                name="requestType"
-                                                value={form.requestType}
-                                                onChange={(e) => handleChange(form.id, e)}
-                                                required
-                                            >
-                                                <option value="get">GET</option>
-                                                <option value="post">POST</option>
-                                                <option value="patch">PATCH</option>
-                                                <option value="put">PUT</option>
-                                                <option value="delete">DELETE</option>
-                                            </select>
-                                        </div>
-                                        <div className="form-group">
-                                            <label>Dynamic URL:</label>
-                                            <input
-                                                type="checkbox"
-                                                name="dynamicUrl"
-                                                checked={form.dynamicUrl}
-                                                onChange={(e) => handleChange(form.id, e)}
-                                            />
-                                        </div>
-                                        <div className="form-group">
-                                            <label>Payload Body:</label>
-                                            <input
-                                                type="checkbox"
-                                                name="payloadBody"
-                                                checked={form.payloadBody}
-                                                onChange={(e) => handleChange(form.id, e)}
-                                                disabled={
-                                                    form.requestType === 'post' || form.requestType === 'patch'
-                                                }
-                                            />
-                                        </div>
-                                    </form>
-                                    <button
-                                        onClick={() => handleRemoveForm(form.id)}
-                                        style={{ marginTop: '10px', color: 'red' }}
-                                    >
-                                        Remove
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-                    ))}
+                        ))}
+
+                    </div>
+
 
                 </div>
             </div>
