@@ -24,12 +24,8 @@ const TypeCodeBox = ({
     if (panelName && forms?.length > 0) {
       const dynamicCode = `
 export interface ${camelCase(panelName)}State {
-${forms
-  .map(
-    (form) => `
-  ${form.reducer}: any;`
-  )
-  .join('')}
+  ${forms.filter((form) => form.reducer !== '').map((form) => `${form.reducer}: any;`)
+  .join('\n  ')}
   loading: boolean;
   error: string | null;
 }

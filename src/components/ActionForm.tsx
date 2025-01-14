@@ -150,8 +150,9 @@ const ActionForm = () => {
                 style={{
                     flex: 2,
                     overflowY: 'auto',
+                    backgroundColor: '#f5f5f5',
+
                     padding: '20px',
-                    backgroundColor: '#fff',
                     borderRight: '1px solid #ddd',
                 }}
             >
@@ -200,7 +201,8 @@ const ActionForm = () => {
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
-                    backgroundColor: '#f5f5f5',
+                    backgroundColor: '#032353',
+
                     boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
                     zIndex: 1,
                 }}
@@ -340,6 +342,7 @@ const ActionForm = () => {
                                                     required
                                                 />
                                             </div>
+                                            
                                             <div className="form-group">
                                                 <label htmlFor={`reducer-${form.id}`}>Reducer:</label>
                                                 <input
