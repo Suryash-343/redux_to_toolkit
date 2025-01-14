@@ -134,7 +134,30 @@ const ActionForm = () => {
     const toggleAccordion = (id: number) => {
         setExpandedForm((prev) => (prev === id ? null : id));
     };
-    console.log(forms, '---+++')
+    // console.log(forms, '---+++')
+
+    const colorRequest= [
+        {
+            color: '#08cc00',
+            requestType: 'get',
+        },
+        {
+            color: '#5e8fcc',
+            requestType: 'post',
+        },
+        {
+            color: '#f0ad4e',
+            requestType: 'patch',
+        },
+        {
+            color: '#f0ad4e',
+            requestType: 'put',
+        },
+        {
+            color: '#d9534f',
+            requestType: 'delete',
+        }
+    ]
 
     return (
         <div
@@ -291,7 +314,7 @@ const ActionForm = () => {
                                         <span
                                             style={{
                                                 padding: '5px 10px',
-                                                backgroundColor: '#ffcc00',
+                                                backgroundColor: colorRequest.find((color) => color.requestType === form.requestType)?.color,
                                                 color: '#000',
                                                 borderRadius: '5px',
                                                 fontWeight: 'bold',
@@ -342,7 +365,6 @@ const ActionForm = () => {
                                                     required
                                                 />
                                             </div>
-                                            
                                             <div className="form-group">
                                                 <label htmlFor={`reducer-${form.id}`}>Reducer:</label>
                                                 <input
@@ -394,11 +416,18 @@ const ActionForm = () => {
                                             </div>
                                         </form>
                                         <button
-                                            onClick={() => handleRemoveForm(form.id)}
-                                            style={{ marginTop: '10px', color: 'red' }}
-                                        >
-                                            Remove
-                                        </button>
+                                        onClick={() => handleRemoveForm(form.id)}
+                                        style={{
+                                            backgroundColor: '#d93025',
+                                            color: '#fff',
+                                            border: 'none',
+                                            borderRadius: '5px',
+                                            padding: '10px 20px',
+                                            cursor: 'pointer',
+                                        }}
+                                    >
+                                        Remove
+                                    </button>
                                     </div>
                                 )}
                             </div>
