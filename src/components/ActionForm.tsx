@@ -86,7 +86,12 @@ const ActionForm = () => {
         id: number,
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
     ) => {
-        const { name, value, type, checked } = e.target;
+        const { name, value, type } = e.target;
+        let checked = e.target;
+        if(type === 'checkbox') {
+            checked = e.target;
+        }
+    
         setForms((prevForms) =>
             prevForms.map((form) =>
                 form.id === id
@@ -94,14 +99,17 @@ const ActionForm = () => {
                         ...form,
                         [name]: type === 'checkbox' ? checked : value,
                         ...(name === 'requestType' &&
-                            (value === 'post' || value === 'patch')
-                            ? { payloadBody: true } // Automatically set payloadBody to true for POST and PATCH
+                        ['post', 'patch'].includes(value) // Check if requestType is 'post' or 'patch'
+                            ? { payloadBody: true } // Set payloadBody to true
+                            : name === 'requestType'
+                            ? { payloadBody: false } // Reset payloadBody for other request types
                             : {}),
                     }
                     : form
             )
         );
     };
+    
 
     const handleAddForm = () => {
         setForms((prevForms) => [
@@ -148,7 +156,6 @@ const ActionForm = () => {
                 }}
             >
                 <h2 style={{ textAlign: 'center', color: '#007acc' }}>Generated Code
-                    <DownloadZipButton zipName={`${panelName}-converted`} files={files} />
                 </h2>
 
                 <ApiCodeBox
@@ -243,6 +250,8 @@ const ActionForm = () => {
                         >
                             + Add Panel
                         </button>
+                    <DownloadZipButton zipName={`${panelName}-converted`} files={files} />
+
                     </div>
 
                     <div style={{
