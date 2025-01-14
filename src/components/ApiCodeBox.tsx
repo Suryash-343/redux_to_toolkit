@@ -6,7 +6,9 @@ const ApiCodeBox = ({
     requestType,
     apiFunctionName,
     dynamicUrl,
-    payloadBody
+    payloadBody,
+    apiCode,
+    setApiCode,
 }: {
     panelName: string;
     endpoint: string;
@@ -14,8 +16,10 @@ const ApiCodeBox = ({
     apiFunctionName: string;
     dynamicUrl: boolean;
     payloadBody: boolean;
+    apiCode: string;
+    setApiCode: any;
+
 }) => {
-    const [apiCode, setApiCode] = useState('');
     const camelCase = (str: string): string => {
       return str
         .replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) => 

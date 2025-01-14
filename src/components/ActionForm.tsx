@@ -15,24 +15,20 @@ const ActionForm = () => {
         dynamicUrl: false, // Default to false
         payloadBody: false, // Default to false
     });
-    const files = [
-        {
-            name: 'SliceCodeBox.ts',
-            content: `// Content of SliceCodeBox.ts\nexport const exampleSlice = {};`,
-        },
-        {
-            name: 'ApiActionCodeBox.ts',
-            content: `// Content of ApiActionCodeBox.ts\nexport const apiAction = {};`,
-        },
-        {
-            name: '<Panel>Api.ts',
-            content: `// Content of <Panel>Api.ts\nexport const panelApi = {};`,
-        },
-        {
-            name: '<Panel>ApiAction.ts',
-            content: `// Content of <Panel>ApiAction.ts\nexport const panelApiAction = {};`,
-        },
-    ];
+    const [sliceCode, setSliceCode] = useState('');
+    const [typeCode, setTypeCode] = useState('');
+    const [apiActionCode, setApiActionCode] = useState('');
+    const [apiCode, setApiCode] = useState('');
+    const camelCase = (str: string): string => {
+        return str
+          .replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) =>
+            index === 0 ? word.toLowerCase() : word.toUpperCase()
+          )
+          .replace(/\s+/g, ''); // Remove all spaces
+      };
+
+ 
+
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
     ) => {
@@ -54,7 +50,24 @@ const ActionForm = () => {
     };
 
     const { panelName, apiFunctionName, reducer, endpoint, dynamicUrl, payloadBody, requestType } = formData;
-
+    const files = [
+        {
+            name: `${camelCase(panelName)}ApiSlice.ts`,
+            content: sliceCode,
+        },
+        {
+            name: `${camelCase(panelName)}ApiTypes.ts`,
+            content: typeCode,
+        },
+        {
+            name: `${camelCase(panelName)}Api.ts`,
+            content: apiCode,
+        },
+        {
+            name: `${camelCase(panelName)}ApiAction.ts`,
+            content: apiActionCode,
+        },
+    ];
     return (
         <div
             style={{
@@ -74,9 +87,17 @@ const ActionForm = () => {
                     borderRight: '1px solid #ddd',
                 }}
             >
-                <h2 style={{ textAlign: 'center', color: '#007acc' }}>Generated Code <DownloadZipButton files={files}/></h2>
+                <h2 style={{ textAlign: 'center', color: '#007acc' }}>Generated Code 
+                    <DownloadZipButton files={files}/>
+                    </h2>
                 {panelName && apiFunctionName && reducer && (
-                    <SliceCodeBox panelName={panelName} apiFunctionName={apiFunctionName} reducer={reducer} />
+                    <SliceCodeBox 
+                    panelName={panelName} 
+                    apiFunctionName={apiFunctionName} 
+                    reducer={reducer}
+                    sliceCode={sliceCode}
+                    setSliceCode={setSliceCode}
+                     />
                 )}
                 {panelName && apiFunctionName && endpoint && (
                     <ApiActionCodeBox
@@ -85,10 +106,17 @@ const ActionForm = () => {
                         endpoint={endpoint}
                         dynamicUrl={dynamicUrl}
                         payloadBody={payloadBody}
+                        apiActionCode={apiActionCode}
+                        setApiActionCode={setApiActionCode}
                     />
                 )}
                 {panelName && endpoint && (
-                    <TypeCodeBox panelName={panelName} reducer={reducer} />
+                    <TypeCodeBox 
+                    panelName={panelName} 
+                    reducer={reducer}
+                    typeCode={typeCode}
+                    setTypeCode={setTypeCode}
+                     />
                 )}
                 {panelName && endpoint && (
                     <ApiCodeBox
@@ -98,6 +126,8 @@ const ActionForm = () => {
                         apiFunctionName={apiFunctionName}
                         dynamicUrl={dynamicUrl}
                         payloadBody={payloadBody}
+                        apiCode={apiCode}
+                        setApiCode={setApiCode}
                     />
                 )}
             </div>

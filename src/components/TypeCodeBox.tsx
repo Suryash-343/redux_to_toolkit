@@ -2,8 +2,15 @@
 
 import React, { useState, useEffect } from 'react';
 
-const TypeCodeBox = ({ panelName, reducer }: { panelName: string; reducer: string; }) => {
-    const [typeCode, setTypeCode] = useState('');
+const TypeCodeBox = ({ 
+    panelName, 
+    reducer, 
+    typeCode,
+    setTypeCode,
+}: { panelName: string; 
+    reducer: string; 
+    typeCode:any;
+    setTypeCode:any;}) => {
     const camelCase = (str: string): string => {
         return str
             .replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) =>

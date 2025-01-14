@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
-const SliceCodeBox = ({ panelName, apiFunctionName, reducer }: { panelName: string; apiFunctionName: string; reducer: string;}) => {
-  const [sliceCode, setSliceCode] = useState('');
+const SliceCodeBox = ({ 
+  panelName, 
+  apiFunctionName, 
+  reducer,
+  sliceCode,
+  setSliceCode,
+ }: { panelName: string; apiFunctionName: string; reducer: string; sliceCode:any; setSliceCode:any;}) => {
   const camelCase = (str: string): string => {
     return str
       .replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) => 

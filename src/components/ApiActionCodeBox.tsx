@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react';
 
-const ApiActionCodeBox = ({ panelName, apiFunctionName, endpoint, dynamicUrl, payloadBody }: { 
+const ApiActionCodeBox = ({ panelName, 
+  apiFunctionName, 
+  endpoint, 
+  dynamicUrl, 
+  payloadBody, 
+apiActionCode, 
+setApiActionCode }: { 
   panelName: string; 
   apiFunctionName: string; 
   endpoint:string; 
   dynamicUrl:any;
   payloadBody:any;
+  apiActionCode:any; 
+setApiActionCode:any;
  }) => {
-  const [apiActionCode, setApiActionCode] = useState('');
 
   const camelCase = (str: string): string => {
     return str
